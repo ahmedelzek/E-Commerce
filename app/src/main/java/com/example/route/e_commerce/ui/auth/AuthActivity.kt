@@ -6,7 +6,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.route.e_commerce.R
 import com.example.route.e_commerce.databinding.ActivityAuthBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
     private var _binding: ActivityAuthBinding? = null
     private val binding: ActivityAuthBinding get() = _binding!!

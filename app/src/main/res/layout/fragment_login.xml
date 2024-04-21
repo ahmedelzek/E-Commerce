@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.example.route.e_commerce.ui.auth.fragments.login.LoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,6 +59,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailEditTextTil"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            error="@{vm.emailErrorLiveData}"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
@@ -68,7 +73,8 @@
                 android:id="@+id/emailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/edit_text_style" />
+                android:background="@drawable/edit_text_style"
+                android:text="@={vm.emailLiveData}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -85,6 +91,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/passwordEditTextTil"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            error="@{vm.passwordErrorLiveData}"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginHorizontal="16dp"
@@ -100,7 +107,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/edit_text_style"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:text="@={vm.passwordLiveData}" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -117,6 +125,7 @@
             android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="64dp"
+            android:onClick="@{()->vm.login()}"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="550dp"
             android:background="@drawable/edit_text_style"
@@ -131,6 +140,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="36dp"
             android:layout_marginTop="24dp"
+            android:onClick="@{()->vm.createOnClick()}"
             android:text="@string/create_new_account"
             android:textAlignment="center"
             android:textColor="@color/white"

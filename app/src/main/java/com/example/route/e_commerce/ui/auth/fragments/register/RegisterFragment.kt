@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.route.e_commerce.R
 import com.example.route.e_commerce.base.BaseFragment
 import com.example.route.e_commerce.databinding.FragmentRegisterBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RegisterFragment : BaseFragment<RegisterViewModel, FragmentRegisterBinding>() {
 
 

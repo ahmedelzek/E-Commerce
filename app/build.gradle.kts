@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -27,6 +29,9 @@ android {
             )
         }
     }
+    kapt {
+        correctErrorTypes = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -34,7 +39,6 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
-
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -43,6 +47,8 @@ android {
 
 dependencies {
     val navVersion = "2.7.7"
+    val retrofitVersion = "2.11.0"
+    val fragmentVersion = "1.6.2"
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -54,9 +60,19 @@ dependencies {
     //navigation
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
     //rounded image
     implementation("com.makeramen:roundedimageview:2.3.0")
-
+    //dagger hilt
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    //logging interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    //glide
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

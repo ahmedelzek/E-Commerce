@@ -1,6 +1,5 @@
 package com.example.route.e_commerce.data.repos.auth_repo
 
-import com.example.route.e_commerce.data.repos.AuthRepoImpl
 import com.example.route.e_commerce.domain.repos.auth_repo.AuthRepo
 import dagger.Binds
 import dagger.Module

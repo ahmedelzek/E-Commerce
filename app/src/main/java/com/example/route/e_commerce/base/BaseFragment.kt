@@ -1,7 +1,9 @@
+
 package com.example.route.e_commerce.base
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,68 +12,53 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.example.route.e_commerce.R
 
-abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> : Fragment() {
-    lateinit var viewModel: VM
+
+abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     lateinit var binding: DB
     private var dialog: AlertDialog? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = initViewModel()
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         binding.lifecycleOwner = this
+        observeLiveData();
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeToLiveData()
+
     }
 
-    open fun observeToLiveData() {
-        viewModel.isLoadingLiveData.observe(viewLifecycleOwner) {
-            if (it)
-                showLoading()
-            else
-                hideLoading()
-        }
-        viewModel.viewMessageLiveData.observe(viewLifecycleOwner) {
-            showDialog(
-                it.title,
-                it.message,
-                it.posButtonTitle,
-                it.negButtonTitle,
-                it.onPosButtonClick,
-                it.onNegButtonClick
-            )
-        }
+    open fun observeLiveData() {
+        Log.e("BaseFragment", "observeLiveData is called")
+
     }
 
-    abstract fun initViewModel(): VM
     abstract fun getLayoutId(): Int
 
-    private fun showLoading() {
+    fun showLoading() {
         val builder = AlertDialog.Builder(activity)
         builder.setView(R.layout.dialog_loading)
-        dialog = builder.create()
+        dialog = builder.create();
         dialog?.show()
+
     }
 
-    private fun hideLoading() {
+    fun hideLoading() {
         dialog?.dismiss()
     }
 
-    private fun showDialog(
+    fun showDialog(
         title: String? = null,
         message: String? = null,
         posButtonTitle: String? = null,
         negButtonTitle: String? = null,
         onPosButtonClick: (() -> Unit)? = null,
-        onNegButtonClick: (() -> Unit)? = null
+        onNegButtonClick: (() -> Unit)? = null,
     ) {
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(title)
@@ -79,19 +66,19 @@ abstract class BaseFragment<VM : BaseViewModel, DB : ViewDataBinding> : Fragment
         posButtonTitle.let {
             builder.setPositiveButton(
                 posButtonTitle
-            ) { dialog, _ ->
-                dialog.dismiss()
+            ) { dialog, p1 ->
+                dialog.dismiss();
                 onPosButtonClick?.invoke()
-            }
+            };
         }
         negButtonTitle.let {
             builder.setPositiveButton(
-                posButtonTitle
-            ) { dialog, _ ->
-                dialog.dismiss()
+                negButtonTitle
+            ) { dialog, p1 ->
+                dialog.dismiss();
                 onNegButtonClick?.invoke()
-            }
+            };
         }
-        builder.create().show()
+        builder.create().show();
     }
 }

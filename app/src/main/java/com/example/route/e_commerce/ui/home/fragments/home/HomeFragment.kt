@@ -1,60 +1,118 @@
 package com.example.route.e_commerce.ui.home.fragments.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.route.e_commerce.R
+import com.example.route.e_commerce.base.BaseFragment
+import com.example.route.e_commerce.data.models.category.Category
+import com.example.route.e_commerce.data.models.product.Product
+import com.example.route.e_commerce.databinding.FragmentHomeBinding
+import com.example.route.e_commerce.ui.home.fragments.home.adapters.CategoriesRecyclerAdapter
+import com.example.route.e_commerce.ui.home.fragments.home.adapters.ProductsRecyclerAdapter
+import com.example.route.e_commerce.ui.utils.UIConstants
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val viewModel: HomeFragmentViewModel by viewModels()
+    private var mostSellingAdapter = ProductsRecyclerAdapter(null)
+    private var categoriesAdapter = CategoriesRecyclerAdapter(null)
+    private var productsAdapter = ProductsRecyclerAdapter(null)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        renderUi()
+        initOffersRecyclerView()
+        initCategoriesRecyclerView()
+        initProductsRecyclerView()
+    }
+
+    private fun renderUi() {
+        viewModel.state.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is HomeFragmentState.CategoriesLoaded -> bindCategories(state.categoriesList)
+                is HomeFragmentState.ProductsLoaded -> bindProducts(state.productsList)
+                is HomeFragmentState.MostSellingLoaded -> bindMostSellingProducts(state.mostSellingList)
+                is HomeFragmentState.CategoryClicked -> navigateToCategoriesScreen(
+                    state.category,
+                    state.position
+                )
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    private fun navigateToCategoriesScreen(category: Category, position: Int) {
+        val preLoadedData = Bundle().apply {
+            val arrayList = ArrayList(categoriesAdapter.categoriesList!!)
+            putParcelableArrayList(UIConstants.PASSED_CATEGORIES_LIST, arrayList)
+            putParcelable(UIConstants.PASSED_CATEGORY, category)
+            putInt(UIConstants.PASSED_POSITION, position)
+        }
+        findNavController().navigate(R.id.action_homeFragment_to_categoriesFragment, preLoadedData)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun getLayoutId(): Int = R.layout.fragment_home
+
+    private fun bindCategories(categoriesList: List<Category?>?) {
+        if (categoriesList.isNullOrEmpty()) return
+        // TODO: loading is delayed for debug purposes only, this MUST be removed from release versions
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.categoriesShimmerViewContainer.stopShimmer()
+            categoriesAdapter.categoriesList = categoriesList
+            categoriesAdapter.notifyDataSetChanged()
+        }, 1000)
     }
+
+    private fun bindProducts(productsList: List<Product?>?) {
+        if (productsList.isNullOrEmpty()) return
+        // TODO: loading is delayed for debug purposes only, this MUST be removed from release versions
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.categoryProductsShimmerViewContainer.stopShimmer()
+            productsAdapter.productsList = productsList
+            productsAdapter.notifyDataSetChanged()
+        }, 1000)
+    }
+
+    private fun bindMostSellingProducts(mostSellingList: List<Product?>?) {
+        if (mostSellingList.isNullOrEmpty()) return
+        // TODO: loading is delayed for debug purposes only, this MUST be removed from release versions
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.mostSellingProductsShimmerViewContainer.stopShimmer()
+            mostSellingAdapter.productsList = mostSellingList
+            mostSellingAdapter.notifyDataSetChanged()
+        }, 1000)
+    }
+
+    private fun initProductsRecyclerView() {
+        binding.categoryProductsRv.adapter = productsAdapter
+        viewModel.invoke(HomeFragmentAction.GetProducts(UIConstants.WOMEN_FASHION_CATEGORY_ID))
+    }
+
+    private fun initOffersRecyclerView() {
+        binding.mostSellingProductsRv.adapter = mostSellingAdapter
+        viewModel.invoke(HomeFragmentAction.GetProducts(UIConstants.WOMEN_FASHION_CATEGORY_ID))
+    }
+
+
+    private fun initCategoriesRecyclerView() {
+        categoriesAdapter.setOnCategoryClickListener { category, position ->
+            viewModel.invoke(HomeFragmentAction.CategoryClicked(category, position))
+        }
+        binding.categoriesRv.adapter = categoriesAdapter
+        viewModel.invoke(HomeFragmentAction.GetAllCategories)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.categoryProductsShimmerViewContainer.stopShimmer()
+        binding.categoriesShimmerViewContainer.stopShimmer()
+        binding.mostSellingProductsShimmerViewContainer.stopShimmer()
+    }
+
 }

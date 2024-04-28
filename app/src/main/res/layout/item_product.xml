@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="product"
+            type="com.example.route.e_commerce.data.models.product.Product" />
 
     </data>
 
@@ -25,6 +28,7 @@
                 android:layout_width="180dp"
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
+                imageFromUrl="@{product.imageCover}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -37,6 +41,7 @@
                 android:layout_margin="10dp"
                 android:fontFamily="@font/poppins_medium"
                 android:lines="1"
+                android:text="@{product.title}"
                 android:maxLines="1"
                 android:textColor="@color/DarkBlue"
                 android:textSize="14sp"
@@ -75,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/egp_1_200"
+                android:text="@{product.priceAfterDiscount.toString()}"
                 android:textColor="@color/DarkBlue"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/product_name"
@@ -87,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/egp_1_500"
+                android:text="@{product.price.toString()}"
                 android:textColor="@color/pale_blue"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="@id/product_price"
@@ -100,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/review"
+                android:text="@{product.ratingsQuantity.toString()}"
                 android:textColor="@color/DarkBlue"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@id/product_price"
@@ -115,6 +120,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/DarkBlue"
                 android:textSize="14sp"
+                android:text="@{product.ratingsAverage.toString()}"
                 app:layout_constraintStart_toEndOf="@id/review_tv"
                 app:layout_constraintTop_toBottomOf="@id/product_price"
                 tools:text="(4.5)" />

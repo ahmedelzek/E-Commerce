@@ -1,9 +1,7 @@
 package com.example.route.e_commerce.ui.auth.fragments.login
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.View
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.route.e_commerce.R
 import com.example.route.e_commerce.base.BaseFragment
@@ -12,14 +10,11 @@ import com.example.route.e_commerce.ui.home.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.vm = viewModel
-    }
+    private val viewModel: LoginViewModel by viewModels()
 
-    override fun observeToLiveData() {
+    override fun observeLiveData() {
         viewModel.events.observe(viewLifecycleOwner) {
             when (it) {
                 LoginScreenEvents.NavigateToHomeEvent -> {
@@ -36,10 +31,6 @@ class LoginFragment : BaseFragment<LoginViewModel, FragmentLoginBinding>() {
         }
 
     }
-
-    override fun initViewModel(): LoginViewModel =
-        ViewModelProvider(this)[LoginViewModel::class.java]
-
 
     override fun getLayoutId(): Int = R.layout.fragment_login
 }

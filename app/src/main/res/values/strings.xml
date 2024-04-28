@@ -47,4 +47,6 @@
     <string name="search">Search</string>
     <string name="like">like</string>
     <string name="placeholder">Placeholder</string>
+    <string name="off">off</string>
+    <string name="up_to">UP TO</string>
 </resources>

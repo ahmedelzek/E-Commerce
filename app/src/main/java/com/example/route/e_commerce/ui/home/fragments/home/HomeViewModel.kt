@@ -7,13 +7,13 @@ import com.example.route.e_commerce.base.BaseViewModel
 import com.example.route.e_commerce.data.models.category.Category
 import com.example.route.e_commerce.domain.usecases.categories.GetAllCategoriesUseCase
 import com.example.route.e_commerce.domain.usecases.products.GetAllProductsUseCase
-import com.example.route.e_commerce.model.ViewMessage
+import com.example.route.e_commerce.ui.model.ViewMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeFragmentViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val getProductsUseCase: GetAllProductsUseCase
 ) : BaseViewModel() {

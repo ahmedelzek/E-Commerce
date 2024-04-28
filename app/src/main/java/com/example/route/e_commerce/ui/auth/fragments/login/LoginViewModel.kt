@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.route.e_commerce.base.BaseViewModel
 import com.example.route.e_commerce.domain.usecases.auth.LoginUseCase
-import com.example.route.e_commerce.model.ViewMessage
+import com.example.route.e_commerce.ui.model.ViewMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

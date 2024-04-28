@@ -1,4 +1,4 @@
-package com.example.route.e_commerce.model
+package com.example.route.e_commerce.ui.model
 
 data class ViewMessage(
     var title: String? = null,

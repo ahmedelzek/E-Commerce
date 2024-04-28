@@ -19,11 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
-    private val viewModel: HomeFragmentViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     private var mostSellingAdapter = ProductsRecyclerAdapter(null)
     private var categoriesAdapter = CategoriesRecyclerAdapter(null)
     private var productsAdapter = ProductsRecyclerAdapter(null)
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

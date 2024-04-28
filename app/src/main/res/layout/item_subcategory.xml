@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <!--
-                <variable
-                    name="sub_category"
-                    type="com.mis.route.domain.models.subcategory.SubCategory" />-->
+
+        <variable
+            name="subCategory"
+            type="com.example.route.e_commerce.data.models.subcategory.SubCategory" />
 
     </data>
 
@@ -28,6 +28,7 @@
             app:strokeWidth="1dp">
 
             <ImageView
+                android:id="@+id/subcategoryImg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
@@ -42,6 +43,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
+            android:text="@{subCategory.name}"
             android:textColor="@color/pale_blue"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

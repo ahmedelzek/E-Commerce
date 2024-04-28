@@ -4,6 +4,7 @@ import com.example.route.e_commerce.data.api.WebServices
 import com.example.route.e_commerce.data.models.auth.LoginRequest
 import com.example.route.e_commerce.data.models.category.Category
 import com.example.route.e_commerce.data.models.product.Product
+import com.example.route.e_commerce.data.models.subcategory.SubCategory
 import com.example.route.e_commerce.data.utils.SharedPreferencesHelper
 import javax.inject.Inject
 
@@ -36,5 +37,14 @@ class RemoteDataSourceImpl @Inject constructor(
         } catch (e: Exception) {
             throw e
         }
+    }
+
+    override suspend fun getAllSubCategories(categoryId: String): List<SubCategory?> {
+        try {
+            return webServices.getSubCategories(categoryId).data ?: emptyList()
+        } catch (e: Exception) {
+            throw e
+        }
+
     }
 }

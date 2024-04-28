@@ -3,7 +3,6 @@ package com.example.route.e_commerce.base
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,18 +23,11 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         binding.lifecycleOwner = this
-        observeLiveData();
+        observeLiveData()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
     open fun observeLiveData() {
-        Log.e("BaseFragment", "observeLiveData is called")
-
     }
 
     abstract fun getLayoutId(): Int
@@ -43,7 +35,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     fun showLoading() {
         val builder = AlertDialog.Builder(activity)
         builder.setView(R.layout.dialog_loading)
-        dialog = builder.create();
+        dialog = builder.create()
         dialog?.show()
 
     }
@@ -66,19 +58,19 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
         posButtonTitle.let {
             builder.setPositiveButton(
                 posButtonTitle
-            ) { dialog, p1 ->
-                dialog.dismiss();
+            ) { dialog, _ ->
+                dialog.dismiss()
                 onPosButtonClick?.invoke()
-            };
+            }
         }
         negButtonTitle.let {
             builder.setPositiveButton(
                 negButtonTitle
-            ) { dialog, p1 ->
-                dialog.dismiss();
+            ) { dialog, _ ->
+                dialog.dismiss()
                 onNegButtonClick?.invoke()
-            };
+            }
         }
-        builder.create().show();
+        builder.create().show()
     }
 }
